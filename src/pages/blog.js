@@ -1,23 +1,23 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
+import Img from 'gatsby-image';
 
 export const pageQuery = graphql`
     query BlogQuery {
-        blog: allFile(filter: {ext: {eq: ".md"}}) {
+        blog:  allContentfulPost {
             items: nodes {
-                base
-                childMarkdownRemark {
-                    html
-                    frontmatter {
-                        author
-                        title                        
-                        date(fromNow: true)
+                id
+                author
+                createdAt(fromNow: true)
+                slug
+                title
+                thumbnail {
+                    fluid {
+                        ...GatsbyContentfulFluid
                     }
-                    excerpt
-                    id
                 }
             }
-        }
+  }
     }
 `;
 
@@ -27,15 +27,18 @@ export default ({ data }) => {
         <div>
             <Link to="/">Home</Link>
             <div className="blog">
-                {data.blog.items.map(({ childMarkdownRemark }) => (
-                    <article key={childMarkdownRemark.id} className="blog-post">
-                        <h4>{childMarkdownRemark.frontmatter.title}</h4>
-                        <small>
-                            {childMarkdownRemark.frontmatter.author.join("; ")},
-                        {childMarkdownRemark.frontmatter.date}
-                        </small>
-                        <p>{childMarkdownRemark.excerpt}</p>
-                    </article>
+                {data.blog.items.map(( blogPost ) => (
+                    <Link to={`blog/${blogPost.slug}`}
+                        key={blogPost.id} >
+                        <article className="blog-post">
+                            <h4>{blogPost.title}</h4>
+                            <small>
+                                {blogPost.author},
+                                {blogPost.createdAt}
+                            </small>
+                            <Img fluid={blogPost.thumbnail.fluid} />
+                        </article>
+                    </Link>
                 ))}
             </div>
         </div>

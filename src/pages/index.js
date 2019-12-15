@@ -7,37 +7,37 @@ import Img from 'gatsby-image';
 import Helmet from 'react-helmet';
 
 export const pageQuery = graphql`
-query TestQuery {
-  site {
-    siteMetadata {
-      title
-      description
+  query TestQuery {
+    site {
+      siteMetadata {
+        title
+        description
+      }
     }
-  }
 
-  allFile (filter: {ext: {eq: ".md"}}){
-    nodes {
-      name
-      base
-      childMarkdownRemark {
-        html
-        frontmatter {
-          title
-          author
-          date(fromNow: true)
+    allFile (filter: {ext: {eq: ".md"}}){
+      nodes {
+        name
+        base
+        childMarkdownRemark {
+          html
+          frontmatter {
+            title
+            author
+            date(fromNow: true)
+          }
+        }
+      }
+    }
+
+    file(name: {eq: "payson-wick-B8VbQj7Y9WI-unsplash"}) {
+      childImageSharp {      
+        fluid(maxWidth: 600, quality: 97) {
+          ...GatsbyImageSharpFluid
         }
       }
     }
   }
-
-  file(name: {eq: "payson-wick-B8VbQj7Y9WI-unsplash"}) {
-    childImageSharp {      
-      fluid(maxWidth: 600, quality: 97) {
-        ...GatsbyImageSharpFluid
-      }
-    }
-  }
-}
 `;
 // invoking fragment like this '...fragmentName' inside of GraphQL
 export const sampleFragment = graphql`
